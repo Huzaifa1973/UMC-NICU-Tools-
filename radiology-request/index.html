@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e40af">
+  <meta name="description" content="UMC NICU Radiology Request Portal">
+  <title>UMC NICU Radiology Request Portal</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark" aria-hidden="true">✚</div>
+      <div>
+        <h1>Umar Medical Complex</h1>
+        <p>NICU Radiology Request Portal</p>
+        <small>Developed by Dr Sajid Nazir<br>MBBS, DCH (UK), MRCPCH (UK), CHPE<br>Neonatologist &amp; Paediatric Cardiologist</small>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="privacy"><strong>Privacy:</strong> Entries remain in this browser and are not uploaded to an AI service or database.</div>
+    <form id="requestForm" novalidate>
+      <section class="panel">
+        <div class="timestamp"><span>Pakistan date and time</span><strong id="clock"></strong></div>
+        <div id="errorBanner" class="error-banner" hidden></div>
+
+        <fieldset>
+          <legend>1. Patient information</legend>
+          <div class="grid grid-3">
+            <label>Prefix<select id="prefix"><option>Son of</option><option>Daughter of</option><option>Baby of</option></select></label>
+            <label>Mother's name <b>*</b><input id="motherName" autocomplete="off"></label>
+            <label>Father's name <b>*</b><input id="fatherName" autocomplete="off"></label>
+            <label>MR number <b>*</b><input id="mrNumber" autocomplete="off" inputmode="numeric"></label>
+            <label>Weight <b>*</b><select id="weight"><option value="">Select weight…</option></select></label>
+            <label>Date of admission <b>*</b><input id="admissionDate" type="date"></label>
+            <label>Admission status<select id="admissionStatus"><option>New admission</option><option>Already admitted</option><option>Readmitted</option></select></label>
+            <label id="readmissionWrap" hidden>Readmission number<select id="readmissionCount"><option>2nd admission</option><option>3rd admission</option><option>Others</option></select></label>
+            <label id="readmissionOtherWrap" hidden>Specify readmission <b>*</b><input id="readmissionOther"></label>
+          </div>
+        </fieldset>
+
+        <div class="grid grid-2">
+          <fieldset>
+            <legend>2. Birth details</legend>
+            <label>Pregnancy type<select id="pregType"><option>Singleton</option><option>Twins</option><option>Triplets</option></select></label>
+            <label id="specificBabyWrap" hidden>Identify baby <b>*</b><select id="specificBaby"></select></label>
+          </fieldset>
+          <fieldset>
+            <legend>3. Requesting clinician</legend>
+            <label>Name <b>*</b><input id="docName" autocomplete="off"></label>
+            <label>Designation<select id="designation"><option>Consultant</option><option>Senior Registrar</option><option selected>Registrar</option><option>RN</option></select></label>
+          </fieldset>
+        </div>
+
+        <fieldset>
+          <legend>4. Imaging request</legend>
+          <div class="priority-box" id="priorityBox">
+            <span class="label-title">Priority *</span>
+            <div class="segmented"><button type="button" class="active" data-priority="Routine">Routine</button><button type="button" data-priority="Urgent">Urgent</button></div>
+            <label id="urgentReasonWrap" hidden>Urgent indication<select id="urgentReason"></select></label>
+            <label id="urgentOtherWrap" hidden>Specify indication <b>*</b><input id="urgentReasonOther"></label>
+          </div>
+
+          <span class="label-title">Imaging modality *</span>
+          <div class="modality-tabs" id="modalityTabs">
+            <button type="button" class="active" data-modality="X-ray">X-ray</button><button type="button" data-modality="CT scan">CT scan</button><button type="button" data-modality="MRI">MRI</button><button type="button" data-modality="Ultrasound">Ultrasound</button>
+          </div>
+
+          <div id="xrayFields" class="modality-fields">
+            <div class="grid grid-3">
+              <label>X-ray type<select id="xrayType"><option>Chest X-ray</option><option>Abdominal X-ray</option><option>Chest and Abdominal both</option><option>Others</option></select></label>
+              <label id="xrayTypeOtherWrap" hidden>Specify type <b>*</b><input id="xrayTypeOther"></label>
+              <label>View<select id="xrayView"><option>AP view</option><option>Lateral view</option><option>Others</option></select></label>
+              <label id="xrayViewOtherWrap" hidden>Specify view <b>*</b><input id="xrayViewOther"></label>
+              <label>Contrast<select id="xrayContrast"><option>Without Contrast</option><option>With IV Contrast</option><option>Contrast inside feeding tube</option><option>Contrast rectal</option></select></label>
+            </div>
+            <div class="safety-box">
+              <strong>Mandatory radiation-safety verification</strong>
+              <div class="segmented"><button type="button" data-prior="no">No prior X-rays</button><button type="button" data-prior="yes">Prior X-rays taken</button></div>
+              <div id="priorDetails" hidden>
+                <label>Number of prior X-rays<select id="xrayCount"></select></label>
+                <label class="check"><input type="checkbox" id="previousXrayConfirmed"> I checked the bedside chart/PACS and confirmed the prior exposure count.</label>
+              </div>
+            </div>
+          </div>
+
+          <div id="ctFields" class="modality-fields" hidden>
+            <div class="grid grid-2">
+              <label>CT target<select id="ctType"><option>Head</option><option>Chest</option><option>Abdomen</option><option>Others</option></select></label>
+              <label id="ctSubtypeWrap" hidden>Chest protocol<select id="ctChestSubtype"><option>Plain</option><option>HRCT</option></select></label>
+              <label id="ctTypeOtherWrap" hidden>Specify target <b>*</b><input id="ctTypeOther"></label>
+              <label>Contrast<select id="ctContrast"><option>Plain / Without contrast</option><option>With contrast</option></select></label>
+            </div>
+            <span class="label-title">Views *</span><div id="ctViews" class="checks"></div>
+            <label id="ctViewsOtherWrap" hidden>Specify other view <b>*</b><input id="ctViewsOther"></label>
+          </div>
+
+          <div id="mriFields" class="modality-fields" hidden>
+            <div class="grid grid-2">
+              <label>MRI target<select id="mriType"><option>Head</option><option>Head and neck</option><option>Chest</option><option>Abdomen</option><option>Pelvis</option><option>Others</option></select></label>
+              <label id="mriTypeOtherWrap" hidden>Specify target <b>*</b><input id="mriTypeOther"></label>
+              <label>Contrast<select id="mriContrast"><option>Plain / Without contrast</option><option>With contrast</option></select></label>
+            </div>
+          </div>
+
+          <div id="usFields" class="modality-fields" hidden>
+            <div class="grid grid-2">
+              <label>Ultrasound target<select id="usType"><option>Brain</option><option>Chest</option><option>Abdomen</option><option>KUB</option><option>Groin</option><option>Spine</option><option>Others</option></select></label>
+              <label id="usTypeOtherWrap" hidden>Specify target <b>*</b><input id="usTypeOther"></label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset><legend>5. Clinical indication</legend><label>Clinical notes <b>*</b><textarea id="clinicalNotes" rows="4" placeholder="RDS, line-tip check, abdominal distension, clinical justification…"></textarea></label></fieldset>
+
+        <div class="actions"><button type="submit" class="primary">Generate requisition</button><button type="button" id="resetBtn" class="secondary">Reset form</button></div>
+      </section>
+    </form>
+
+    <section id="outputSection" hidden>
+      <div class="share-card"><h2>Official requisition ready</h2><p>Use your device's share menu and select WhatsApp, or download the PNG and attach it manually.</p><div class="actions"><button id="shareImageBtn" class="share">Share slip image</button><button id="copyBtn" class="secondary">Copy WhatsApp text</button><button id="printBtn" class="secondary">Print</button></div><p id="toast" role="status"></p></div>
+      <article id="slip" class="slip"></article>
+      <pre id="requestText" class="request-text"></pre>
+    </section>
+  </main>
+  <footer>UMC NICU clinical workflow tool • Verify every request before sharing</footer>
+  <script src="./app.js"></script>
+</body>
+</html>

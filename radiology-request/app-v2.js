@@ -77,7 +77,7 @@
   $('resetBtn').addEventListener('click',()=>{if(!confirm('Clear all entries and reset the form?'))return;location.reload();});
 
   function wrap(ctx,text,x,y,maxWidth,lineHeight,maxLines=4){const words=String(text).split(/\s+/);let line='',lines=[];for(const word of words){const test=line?`${line} ${word}`:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word;}else line=test;}if(line)lines.push(line);lines.slice(0,maxLines).forEach((l,i)=>ctx.fillText(i===maxLines-1&&lines.length>maxLines?`${l}…`:l,x,y+i*lineHeight));return Math.min(lines.length,maxLines)*lineHeight;}
-  function makeCanvas(){
+  function makeCanvas(){const d = details();
     const c=document.createElement('canvas'); c.width=1080; c.height=1350;
     const x=c.getContext('2d'); const navy='#0f2744', blue='#1e40af', red='#dc2626', ink='#0f172a', muted='#64748b', line='#cbd5e1';
     x.fillStyle='#f8fafc'; x.fillRect(0,0,c.width,c.height); x.fillStyle='#fff'; x.fillRect(22,22,1036,1306);
